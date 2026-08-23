@@ -1,0 +1,6 @@
+interface:
+  display_name: "Find Skills CN Safe"
+  short_description: "中文优先的 Agent Skill 搜索、安全审查与可追踪安装工作流"
+  default_prompt: "Use $find-skills-cn-safe to search, compare, and safely evaluate an Agent Skill for my task."
+policy:
+  allow_implicit_invocation: true
