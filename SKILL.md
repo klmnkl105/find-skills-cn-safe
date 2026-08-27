@@ -23,10 +23,13 @@ description: >-
 
 ## 搜索
 
-1. 先看本地已安装 Skill，避免重复推荐。
-2. 按 `references/search.md` 用 **skills.sh 优先、GitHub 兜底** 两个来源搜索，**每个来源限时 15 秒**，超时跳过不重试。
-3. 搜索只取元数据：名称、描述、来源、Skill 路径、install 数 / star 数。
-4. 找到足够结果就停，不追求覆盖所有渠道。
+按 `references/search.md` 串行搜索，**每个来源限时 15 秒**，超时跳过不重试：
+
+1. **skills.sh**（主）→ 结果按 installs 降序排（热门优先）
+2. 不够 → **SkillsMP**（聚合站）→ 按 stars 降序排
+3. 不够 → **GitHub**（源头兜底）→ 按 star 降序排
+
+搜索只取元数据：名称、描述、来源、install 数 / star 数。找到足够结果就停。不读任何 agent 的本地已安装目录。
 
 ## 推荐输出
 
@@ -34,7 +37,7 @@ description: >-
 
 - **名称**
 - **介绍**：两三句话，说清它能解决什么问题、适合什么场景
-- **流行度**：skills.sh 来源显示安装量 `installs 667k`；GitHub 来源显示 `⭐ 5.8k`。拿不到就不显示，不编造
+- **流行度**：skills.sh 来源显示安装量 `installs 667k`；SkillsMP / GitHub 来源显示 `⭐ 5.8k`。拿不到就不显示，不编造
 
 按匹配度排序，只输出高匹配的，无关结果不展示。找不到可信结果就直接说明没有找到，不拿 MCP、Plugin 或普通项目凑数。
 
