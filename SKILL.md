@@ -2,11 +2,12 @@
 name: find-skills-cn-safe
 description: >-
   Find installable Agent Skills fast. Given a Chinese or English request,
-  return only the most relevant candidates as: skill name, one-line what-it-does,
-  and the exact install command. Verify basic usability and obvious malicious
-  behavior before anything is installed. Installation only after the user
-  reviews and approves. Do not recommend MCP servers, plugins, apps, agents,
-  packages, or general GitHub projects as Skills.
+  return a few best-matched candidates as: skill name, a short description
+  with what-it-does, and a popularity indicator (installs or GitHub stars).
+  Verify basic usability and obvious malicious behavior before anything is
+  installed. Installation only after the user reviews and approves. Do not
+  recommend MCP servers, plugins, apps, agents, packages, or general GitHub
+  projects as Skills.
 ---
 
 # Find Skills CN Safe
@@ -26,22 +27,22 @@ MCP server、Plugin、App、Agent、提示词合集、软件包、普通开源�
 3. 按 `references/search.md` 选来源、串行搜索，**每个外部调用限时 15 秒，超时即跳过**。搜索只取元数据：名称、描述、来源、Skill 路径、安装标识。
 4. 找到 2~5 个按匹配度排序的候选就停，不追求覆盖全部渠道。找到可安装的结果后立即停止扩大搜索。
 
-## 推荐输出（只给有效信息）
+## 推荐输出
 
-每个候选只输出：
+每个候选输出三样：
 
 - **名称**——一行
-- **作用**——一句话
-- **安装命令**——准确的 Skills CLI 命令（多技能仓库用 `-s <skill名>` 指定，命令格式以 `skills --help` 现场确认的为准）
+- **作用**——两三句话，讲清它解决什么问题、适合什么场景，别只给一句话也别长篇
+- **流行度**——只显示一个真实指标：skills.sh 来源显示 `installs`（实际安装次数，如 `installs 667k`）；GitHub 来源显示 `⭐ star`（如 `⭐ 5.8k`）。拿不到就不显示，不要编造
 
-不要输出仓库网址、skill 路径、安装量、Stars、作者、官方标识等与使用无关的信息。
+不要输出安装命令、仓库网址、skill 路径、作者、官方标识等与选择无关的信息。
 
 找不到可信结果就直接说明没有找到，不拿 MCP、Plugin 或普通项目凑数。
 
 ## 安装必须用户批准
 
 1. 用户点名选定某个候选后，**先读它的 `SKILL.md`**，按 `references/trust.md` 做快速危险检查，并向用户说明该 Skill 会做什么、是否有额外依赖。
-2. 用户明确同意后，用本机 Skills CLI 安装（命令先 `skills --help` 现场确认，不要凭记忆）。不自动安装新 CLI、系统组件或未说明的全局依赖。
+2. 用户明确同意后，用本机 Skills CLI 安装（执行前先 `skills --help` 现场确认准确命令，不要凭记忆）。不自动安装新 CLI、系统组件或未说明的全局依赖。
 3. 装完验证可发现：`skills list` 能看到该 Skill。
 
 ## 更新只处理用户点名的

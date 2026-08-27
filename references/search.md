@@ -7,10 +7,10 @@
 1. **当前已安装的 Skill**：先看本地 `~/.claude/skills/` 有没有，避免重复推荐。
 2. **skills.sh 公共 API**：主来源。
    - 命令：`curl -s --max-time 15 "https://skills.sh/api/search?q=<英文查询>&limit=10"`
-   - 只读元数据，返回字段里有名称、描述、来源仓库与安装标识时直接采用。
+   - 返回字段：`name`、`installs`（真实安装量）、`source`（来源仓库）、`skillId`。`installs` 直接作为流行度展示（约数，如 `667k`）。
 3. **GitHub 仓库搜索**（第 2 步无结果时）：
    - 命令：`curl -s --max-time 15 "https://api.github.com/search/repositories?q=<查询>+claude-skill&per_page=10"`
-   - 只看能定位到具体 `SKILL.md` 的仓库，多技能仓库必须记录具体 skill 路径。
+   - 用 `stargazers_count` 作为流行度（`⭐ 5.8k`）。只看能定位到具体 `SKILL.md` 的仓库，多技能仓库必须记录具体 skill 路径。
 
 独立来源不要并行、不要多查几页。主查询命中 2~5 个候选就停。
 
