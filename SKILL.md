@@ -1,56 +1,47 @@
 ---
 name: find-skills-cn-safe
 description: >-
-  Find installable Agent Skills fast. Given a Chinese or English request,
-  return a few best-matched candidates as: skill name, a short description
-  with what-it-does, and a popularity indicator (installs or GitHub stars).
-  Verify basic usability and obvious malicious behavior before anything is
-  installed. Installation only after the user reviews and approves. Do not
-  recommend MCP servers, plugins, apps, agents, packages, or general GitHub
-  projects as Skills.
+  快速找到最匹配的 Agent Skill。理解中文或英文需求，提取关键词去搜索可安装的
+  Agent Skill，输出少量高匹配结果：名称、简单介绍、下载量（installs）或
+  GitHub star 数。默认只搜索推荐，安装由用户决定。不要推荐 MCP server、
+  Plugin、App、Agent、软件包或普通开源项目当作 Skill。
 ---
 
 # Find Skills CN Safe
 
-快速精准地找到一个 Agent Skill。先定位，再阅读，用户同意后才安装。
+快速、全面地为用户找到最匹配的可安装 Agent Skill。
 
-## 只推荐可安装的 Agent Skill
+## 理解需求（中文适配）
 
-候选必须有可定位的 Skill 目录、有效的 `SKILL.md` 和可识别的 `name` / `description`。仓库里偶然出现 `SKILL.md` 或名字带 skill 不算数。
+1. 先理解用户要**做什么**，用一句话复述确认方向，不要照着字面词机械搜索。
+2. 从需求里提取搜索关键词：核心词（技术/任务）+ 扩展词（相关领域、同义词、中英文变体）。扩展词只在能提高命中率时加，一般不超过 2~3 个。
+3. 判断需求明确度：
+   - **明确**（具体技术/任务，如 "Python 数据分析"、"做 PPT"）→ 输出 **1~3 个** 最匹配的结果。
+   - **模糊/宽泛**（如 "有没有好用的 skill"、"找论文相关的"）→ 输出 **最多 5 个** 覆盖不同方向的候选。
+4. 不要问一堆澄清问题。需求太模糊时先按最可能的理解搜，用结果数量体现覆盖度。
 
-MCP server、Plugin、App、Agent、提示词合集、软件包、普通开源项目不能进入推荐，搜索源返回这些时直接排除。
+## 搜索
 
-## 快速搜索（一次到位）
-
-1. 看一眼当前已安装 Skill 的名称和描述，避免重复推荐。
-2. 生成**一个主要英文查询**。只有中英文变体或同义词能明显改善结果时，才最多补一个查询。不要把用户的话拆成一堆词各搜一遍。
-3. 按 `references/search.md` 选来源、串行搜索，**每个外部调用限时 15 秒，超时即跳过**。搜索只取元数据：名称、描述、来源、Skill 路径、安装标识。
-4. 找到 2~5 个按匹配度排序的候选就停，不追求覆盖全部渠道。找到可安装的结果后立即停止扩大搜索。
+1. 先看本地已安装 Skill，避免重复推荐。
+2. 按 `references/search.md` 用 **skills.sh 优先、GitHub 兜底** 两个来源搜索，**每个来源限时 15 秒**，超时跳过不重试。
+3. 搜索只取元数据：名称、描述、来源、Skill 路径、install 数 / star 数。
+4. 找到足够结果就停，不追求覆盖所有渠道。
 
 ## 推荐输出
 
-每个候选输出三样：
+每个候选三行：
 
-- **名称**——一行
-- **作用**——两三句话，讲清它解决什么问题、适合什么场景，别只给一句话也别长篇
-- **流行度**——只显示一个真实指标：skills.sh 来源显示 `installs`（实际安装次数，如 `installs 667k`）；GitHub 来源显示 `⭐ star`（如 `⭐ 5.8k`）。拿不到就不显示，不要编造
+- **名称**
+- **介绍**：两三句话，说清它能解决什么问题、适合什么场景
+- **流行度**：skills.sh 来源显示安装量 `installs 667k`；GitHub 来源显示 `⭐ 5.8k`。拿不到就不显示，不编造
 
-不要输出安装命令、仓库网址、skill 路径、作者、官方标识等与选择无关的信息。
+按匹配度排序，只输出高匹配的，无关结果不展示。找不到可信结果就直接说明没有找到，不拿 MCP、Plugin 或普通项目凑数。
 
-找不到可信结果就直接说明没有找到，不拿 MCP、Plugin 或普通项目凑数。
+## 安装（用户决定）
 
-## 安装必须用户批准
-
-1. 用户点名选定某个候选后，**先读它的 `SKILL.md`**，按 `references/trust.md` 做快速危险检查，并向用户说明该 Skill 会做什么、是否有额外依赖。
-2. 用户明确同意后，用本机 Skills CLI 安装（执行前先 `skills --help` 现场确认准确命令，不要凭记忆）。不自动安装新 CLI、系统组件或未说明的全局依赖。
-3. 装完验证可发现：`skills list` 能看到该 Skill。
-
-## 更新只处理用户点名的
-
-用户要求检查某 Skill 更新时，只做只读比较；用户明确同意后才执行更新命令。来源不明、同名多源或本地有不明改动时停止并说明原因。
+用户选定后，先读它的 `SKILL.md` 确认可用性和明显危险行为（见 `references/trust.md`），向用户说明它会做什么、有没有额外依赖，用户明确同意后才让用户或本机工具安装。不自动执行远程安装脚本。
 
 ## 边界
 
-- 默认只读：不安装、不更新、不运行任何候选脚本。
-- 不下载远程代码直接执行；不用 Base64/压缩包/动态求值隐藏执行内容。
-- 不把静态检查"无发现"说成安全保证。
+- 默认只读：不安装、不更新、不执行候选脚本。
+- 不把"静态检查无发现"说成安全保证。
