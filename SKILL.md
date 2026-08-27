@@ -1,5 +1,5 @@
 ---
-name: find-skills-cn-safe
+name: find-skills-cn
 description: >-
   快速找到最匹配的 Agent Skill。理解中文或英文需求，提取关键词去搜索可安装的
   Agent Skill，输出少量高匹配结果：名称、简单介绍、下载量（installs）或
@@ -7,7 +7,7 @@ description: >-
   Plugin、App、Agent、软件包或普通开源项目当作 Skill。
 ---
 
-# Find Skills CN Safe
+# Find Skills CN
 
 快速、全面地为用户找到最匹配的可安装 Agent Skill。
 

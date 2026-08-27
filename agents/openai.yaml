@@ -1,6 +1,6 @@
 interface:
-  display_name: "Find Skills CN Safe"
+  display_name: "Find Skills CN"
   short_description: "快速找到可安装的 Agent Skill，输出名称、介绍、下载量与 star 数"
-  default_prompt: "Use $find-skills-cn-safe to find an Agent Skill for my task."
+  default_prompt: "Use $find-skills-cn to find an Agent Skill for my task."
 policy:
   allow_implicit_invocation: true
