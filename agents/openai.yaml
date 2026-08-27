@@ -1,6 +1,0 @@
-interface:
-  display_name: "Find Skills CN Safe"
-  short_description: "快速搜索 Agent Skills，检查可用性与明显危险，并追踪来源更新"
-  default_prompt: "Use $find-skills-cn-safe to quickly find an Agent Skill for my task."
-policy:
-  allow_implicit_invocation: true
